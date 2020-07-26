@@ -1,27 +1,134 @@
 <html>
 
 <header>
-    
+
 </header>
 
 
 <head>
-
+    <link href="assets/css/index.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
 
-    <button id="lowG">Low G</button>
-    <button id="lowA">Low A</button>
-    <button id="B">B</button>
-    <button id="C">C</button>
-    <button id="D">D</button>
-    <button id="E">E</button>
-    <button id="F">F</button>
-    <button id="G">High G</button>
-    <button id="A">High A</button>
-    <button id="stop">Stop</button>
+    <div class="midiTests">
+        <button id="lowG">Low G</button>
+        <button id="lowA">Low A</button>
+        <button id="B">B</button>
+        <button id="C">C</button>
+        <button id="D">D</button>
+        <button id="E">E</button>
+        <button id="F">F</button>
+        <button id="G">High G</button>
+        <button id="A">High A</button>
+        <button id="stop">Stop</button>
+    </div>
 
+
+    <div class="UI">
+
+        <div class="menuBar">
+
+
+        </div>
+
+        <div class="buttonContainer">
+
+            <div class="controlButtons">
+                <button id="new">New</button>
+                <button id="open">Open</button>
+                <button id="save">Save</button>
+                <button id="print">Print</button>
+                <button id="noteToolbar">Note Toolbar</button>
+            </div>
+
+
+            <div class="mediaButtons">
+                <button id="play">Play</button>
+                <button id="rewind">Rewind</button>
+                <button id="stop">Stop</button>
+                <button id="repeat">Repeat</button>
+                <div class="speedSlider">
+                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mainArea">
+
+            <div class="notePanel">
+                <div class="tabs">
+                    <button id="basicTab">Basic</button>
+                    <button id="structureTab">Structure</button>
+                    <button id="EmbelishmentsTab">Embelishments</button>
+                
+
+                <div class="basicTabPanel">
+                    <button id="lowG">
+                        <img src="assets/images/PositionLowG.jpg" alt="submit" />
+                    </button>
+                    <button id="lowA">
+                        <img src="assets/images/PositionLowA.jpg" alt="submit" />
+                    </button>
+                    <button id="b">
+                        <img src="assets/images/PositionB.jpg" alt="submit" />
+                    </button>
+                    <button id="c">
+                        <img src="assets/images/PositionC.jpg" alt="submit" />
+                    </button>
+                    <button id="d">
+                        <img src="assets/images/PositionD.jpg" alt="submit" />
+                    </button>
+                    <button id="e">
+                        <img src="assets/images/PositionE.jpg" alt="submit" />
+                    </button>
+                    <button id="f">
+                        <img src="assets/images/PositionF.jpg" alt="submit" />
+                    </button>
+                    <button id="highG">
+                        <img src="assets/images/PositionHighG.jpg" alt="submit" />
+                    </button>
+                    <button id="highA">
+                        <img src="assets/images/PositionHighA.jpg" alt="submit" />
+                    </button>
+                </div>
+
+                <div class="structureTabPanel">
+                    <button id="bar">Bar</button>
+                    <button id="repeat">Repeat</button>
+                </div>
+
+                <div class="EmbelishmentsTabPanel">
+                    <button id="gGrace">G Grace</button>
+                    <button id="eGrace">E Grace</button>
+                    <button id="dGrace">D Grace</button>
+                    <button id="doubling">Doubling</button>
+                    <button id="birl">Birl</button>
+                    <button id="throw">Throw</button>
+                    <button id="grip">Grip</button>                  
+                </div>
+
+            </div>
+
+        </div>
+
+            <div class="sheet">
+
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+    </div>
 
 </body>
 
@@ -29,4 +136,3 @@
 </html>
 
 <script src="assets/js/index.js"></script>
-
