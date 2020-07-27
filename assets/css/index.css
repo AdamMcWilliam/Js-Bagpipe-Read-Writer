@@ -47,11 +47,20 @@ body{
 
 .sheet{
     background-color: white;
-    width: 78%;
-    height: 79%;
-    position: relative;
-    left: 25em;
-    top: 28px;
+    width: 100%;
+    height: 100%;
+    padding-left: 24em;
+    margin: auto;
+    padding-top: 1em;
+}
+
+#sheetCanvas{
+    border: 1px solid rgb(211, 211, 211);
+    width: 93em;
+    height: 70%;
+    padding-top: 0em;
+    padding-left: 15px;
+    overflow: hidden;
 }
 
 .basicTabPanel button img{

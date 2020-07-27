@@ -7,6 +7,7 @@
 
 <head>
     <link href="assets/css/index.css" type="text/css" rel="stylesheet" />
+    <script src="assets/js/index.js"></script>
 </head>
 
 <body>
@@ -35,7 +36,7 @@
         <div class="buttonContainer">
 
             <div class="controlButtons">
-                <button id="new">New</button>
+                <button id="new" onclick="newSheet()">New</button>
                 <button id="open">Open</button>
                 <button id="save">Save</button>
                 <button id="print">Print</button>
@@ -114,9 +115,7 @@
         </div>
 
             <div class="sheet">
-
-
-
+                <canvas id="sheetCanvas"></canvas>
             </div>
 
 
@@ -135,4 +134,4 @@
 
 </html>
 
-<script src="assets/js/index.js"></script>
+<script src="assets/js/midiTester.js"></script>

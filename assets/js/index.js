@@ -1,52 +1,52 @@
+//New Button
+function newSheet() {
+    var c = document.getElementById("sheetCanvas");
 
+    c.width = c.height *
+        (c.clientWidth / c.clientHeight);
 
+    var ctx = c.getContext("2d");
 
-var context = null;
-var oscillator = null;
-function getOrCreateContext() {
-    if (!context) {
-        context = new AudioContext();
-        oscillator = context.createOscillator();
-        oscillator.connect(context.destination);
+    ctx.lineWidth = 0.8;
+
+    //lines
+    var x = 10;
+    var y = 15;
+    var lineLength = 340;
+
+    for (var i = 0; i <= 4; i++) {
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(lineLength, y);
+        ctx.stroke();
+        ctx.closePath();
+
+        y += 10;
     }
-    return context;
 
-}
+    //bars
+    var x = 80
+    var y1 = 15;
+    var y2 = 55;
 
-var isStarted = false;
-function playSound(frequency, type) {
-    getOrCreateContext();
-    oscillator.frequency.setTargetAtTime(frequency, context.currentTime, 0);
-    if (!isStarted) {
-        oscillator.start(0);
-        isStarted = true;
-    } else {
-        context.resume();
+    for (var i = 0; i <= 4; i++) {
+
+        ctx.beginPath();
+        ctx.moveTo(x, y1);
+        ctx.lineTo(x, y2);
+        ctx.stroke();
+        ctx.closePath();
+
+        x += 86.5;
+
     }
+
+    drawing = new Image();
+    drawing.src = "assets/images/Stave.png";
+    drawing.onload = function() {
+        ctx.drawImage(drawing, 10, 15, 15, 35);
+    }
+
+
 }
-
-function stopSound() {
-    context.suspend();
-}
-
-
-
-document.getElementById('lowG').addEventListener('click', playSound.bind(null, 422, 'square'));
-
-document.getElementById('lowA').addEventListener('click', playSound.bind(null, 475, 'square'));
-
-document.getElementById('B').addEventListener('click', playSound.bind(null, 534, 'square'));
-
-document.getElementById('C').addEventListener('click', playSound.bind(null, 594, 'square'));
-
-document.getElementById('D').addEventListener('click', playSound.bind(null, 641, 'square'));
-
-document.getElementById('E').addEventListener('click', playSound.bind(null, 713, 'square'));
-
-document.getElementById('F').addEventListener('click', playSound.bind(null, 792, 'square'));
-
-document.getElementById('G').addEventListener('click', playSound.bind(null, 855, 'square'));
-
-document.getElementById('A').addEventListener('click', playSound.bind(null, 950, 'square'));
-
-document.getElementById('stop').addEventListener('click', stopSound);
