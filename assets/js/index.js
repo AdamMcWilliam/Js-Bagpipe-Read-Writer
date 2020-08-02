@@ -1,8 +1,9 @@
 //Globals
 var noteX = 0;
+var yMod = 1; 
 
 //resetGlobals
-function resetGlobals(){
+function resetX(){
     noteX = 0
     console.log("noteX: "+noteX);
     return noteX;
@@ -21,7 +22,7 @@ function newSheet() {
     //clear first
     ctx.clearRect(0, 0, c.width, c.height);
     //rest notesX
-    resetGlobals()
+    resetX()
     
 
     ctx.lineWidth = 2;
@@ -99,6 +100,12 @@ function placeNote(note) {
 
     var noteY;
 
+    if(noteX >= 1500){
+        //reset X
+        resetX();
+        yMod +=180;
+    }
+
     switch (note) {
         case "lowG":
             noteY = 172;
@@ -129,10 +136,40 @@ function placeNote(note) {
             break;
     }
 
-
-
-
     note = new Image();
     note.src = "assets/images/note.png";
-    ctx.drawImage(note, noteX, noteY, 35, 40);
+    ctx.drawImage(note, noteX, (noteY+yMod), 35, 40);
+}
+
+function play(){
+    hitDetector = new Image();
+    hitDetector.src = "assets/images/hitdetector.png";
+    startingX = 60;
+    startingY = 110;
+
+    animate();
+}
+
+function stop(){
+    cancelAnimationFrame(animate);
+}
+
+function animate(){
+
+    var c = document.getElementById("sheetCanvas");
+    var ctx = c.getContext("2d");
+
+    c.width = 1500;
+    c.height = 900;
+
+    ctx.clearRect(hitDetector.x, hitDetector.y, c.width, c.height);  // clear canvas
+    ctx.drawImage(hitDetector, startingX, startingY, 10, 100);
+    //line 2 x 290
+    //animate
+
+    startingX += 4;
+    if (startingX < c.width){
+        requestAnimationFrame(animate);
+    }
+
 }
