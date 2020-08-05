@@ -2,6 +2,13 @@ body{
     background-color:white;
 }
 
+.structureTabPanel{
+    display: none;
+}
+
+.embelishmentsTabPanel{
+    display: none;
+}
 
 .UI{
     padding-top: 20px;

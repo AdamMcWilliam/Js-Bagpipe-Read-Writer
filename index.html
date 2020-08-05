@@ -7,7 +7,7 @@
 
 <head>
     <link href="assets/css/index.css" type="text/css" rel="stylesheet" />
-    <script src="assets/js/index.js"></script>
+    
 </head>
 
 <body>
@@ -49,6 +49,7 @@
                 <button id="rewind">Rewind</button>
                 <button id="stop" onclick="stop()">Stop</button>
                 <button id="repeat">Repeat</button>
+                <button id="getImages" onclick="getImages()">Get Images</button>
                 <div class="speedSlider">
                     <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
                 </div>
@@ -60,12 +61,12 @@
 
             <div class="notePanel">
                 <div class="tabs">
-                    <button id="basicTab">Basic</button>
-                    <button id="structureTab">Structure</button>
-                    <button id="EmbelishmentsTab">Embelishments</button>
+                    <button id="basicTab" onclick="tabChange('basicTabPanel')">Basic</button>
+                    <button id="structureTab" onclick="tabChange('structureTabPanel')">Structure</button>
+                    <button id="embelishmentsTab" onclick="tabChange('embelishmentsTabPanel')">Embelishments</button>
                 
 
-                <div class="basicTabPanel">
+                <div id ="basicTabPanel" class="basicTabPanel">
                     <button id="lowG" onclick="placeNote('lowG')">
                         <img src="assets/images/PositionLowG.jpg" alt="submit" />
                     </button>
@@ -95,12 +96,12 @@
                     </button>
                 </div>
 
-                <div class="structureTabPanel">
+                <div id="structureTabPanel" class="structureTabPanel">
                     <button id="bar">Bar</button>
                     <button id="repeat">Repeat</button>
                 </div>
 
-                <div class="EmbelishmentsTabPanel">
+                <div id="embelishmentsTabPanel" class="embelishmentsTabPanel">
                     <button id="gGrace">G Grace</button>
                     <button id="eGrace">E Grace</button>
                     <button id="dGrace">D Grace</button>
@@ -115,7 +116,7 @@
         </div>
 
             <div class="sheet">
-                <canvas id="sheetCanvas"></canvas>
+                <canvas id="sheetCanvas" style="width:1500px; height:900;"></canvas>
             </div>
 
 
@@ -135,3 +136,4 @@
 </html>
 
 <script src="assets/js/midiTester.js"></script>
+<script src="assets/js/index.js"></script>

@@ -1,11 +1,54 @@
+//Testing
+
+function getCursorPosition(canvas, event) {
+    const rect = canvas.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    console.log("x: " + x + " y: " + y)
+}
+
+const canvas = document.querySelector('canvas');
+canvas.addEventListener('mousedown', function (e) {
+    getCursorPosition(canvas, e)
+})
+
+
+function getImages() {
+
+    var c = document.getElementById("sheetCanvas");
+    var ctx = c.getContext("2d");
+
+    var imgData = ctx.getImageData(59, 87, 1480, 140);
+    console.log(imgData);
+    ctx.putImageData(imgData, 28, 769);
+
+}
+
+//Menus
+function tabChange(clickedTab) {
+    var selectedTab = document.getElementById(clickedTab);
+    selectedTab.style.display = "block";
+
+    var tabs = ["basicTabPanel", "structureTabPanel", "embelishmentsTabPanel"];
+    var elm;
+
+    for (i = 0; i <= tabs.length; i++) {
+        if (tabs[i] != clickedTab) {
+            console.log(tabs[i]);
+            elm = document.getElementById(tabs[i]);
+            elm.style.display = "none";
+        }
+    }
+}
+
 //Globals
 var noteX = 0;
-var yMod = 1; 
+var yMod = 1;
 
 //resetGlobals
-function resetX(){
+function resetX() {
     noteX = 0
-    console.log("noteX: "+noteX);
+    console.log("noteX: " + noteX);
     return noteX;
 }
 
@@ -23,7 +66,7 @@ function newSheet() {
     ctx.clearRect(0, 0, c.width, c.height);
     //rest notesX
     resetX()
-    
+
 
     ctx.lineWidth = 2;
 
@@ -86,9 +129,9 @@ function newSheet() {
 }
 
 
-function getNoteX(){
-    console.log("noteX: "+noteX);
-    return noteX+=80; 
+function getNoteX() {
+    console.log("noteX: " + noteX);
+    return noteX += 80;
 }
 
 function placeNote(note) {
@@ -100,10 +143,10 @@ function placeNote(note) {
 
     var noteY;
 
-    if(noteX >= 1500){
+    if (noteX >= 1500) {
         //reset X
         resetX();
-        yMod +=180;
+        yMod += 180;
     }
 
     switch (note) {
@@ -138,38 +181,51 @@ function placeNote(note) {
 
     note = new Image();
     note.src = "assets/images/note.png";
-    ctx.drawImage(note, noteX, (noteY+yMod), 35, 40);
+    ctx.drawImage(note, noteX, (noteY + yMod), 35, 40);
 }
 
-function play(){
+function play() {
     hitDetector = new Image();
     hitDetector.src = "assets/images/hitdetector.png";
     startingX = 60;
-    startingY = 110;
+    startingY = 95;
+    lines = 4;
+
+    c = document.getElementById("sheetCanvas");
+    ctx = c.getContext("2d");
+
+    sheetData = ctx.getImageData(0, 0, 1500, 900);
 
     animate();
 }
 
-function stop(){
+function stop() {
     cancelAnimationFrame(animate);
 }
 
-function animate(){
+function animate() {
 
-    var c = document.getElementById("sheetCanvas");
-    var ctx = c.getContext("2d");
 
-    c.width = 1500;
-    c.height = 900;
+    ctx.putImageData(sheetData, 0, 0);
+    ctx.drawImage(hitDetector, startingX, startingY, 10, 135);
 
-    ctx.clearRect(hitDetector.x, hitDetector.y, c.width, c.height);  // clear canvas
-    ctx.drawImage(hitDetector, startingX, startingY, 10, 100);
-    //line 2 x 290
-    //animate
 
-    startingX += 4;
-    if (startingX < c.width){
-        requestAnimationFrame(animate);
+    if (startingY <= 700) {
+
+        startingX += 4;
+        if (startingX < (c.width + hitDetector.width + 3)) {
+            requestAnimationFrame(animate);
+            //console.log(startingX);
+            //console.log(c.width);
+        }
+
+        if (startingX >= (c.width + hitDetector.width + 3)) {
+            startingY += 180;
+            startingX = 60;
+            lines -= 1;
+            requestAnimationFrame(animate);
+        }
+
     }
 
 }
