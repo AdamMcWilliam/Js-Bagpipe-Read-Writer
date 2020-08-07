@@ -1,6 +1,3 @@
-
-
-
 var context = null;
 var oscillator = null;
 function getOrCreateContext() {

@@ -27,6 +27,34 @@ function getImages() {
 
 
 //Audio
+function noteHit(ctx,x,y){
+    var noteNames = ['lowG', 'lowA', 'B', 'C', 'D', 'E', 'F', 'highG', 'highA'];
+    var noteFrequencys = [422,475,534,594,641,713,792,855,950];
+    var noteYOnHitDetector = [88,78,68,58,48,38,28,18,8];
+    
+
+    for (var n=0; n<=8; n++){
+        //get RGBA of every note pixel
+        console.log(x);
+        console.log(y);
+
+
+
+        pixel = ctx.getImageData(x,y+noteYOnHitDetector[n],1,1).data;
+        R = pixel[0];
+        G = pixel[1];
+        B = pixel[2];
+        A = pixel[3];
+
+        //check for black
+        if(R==0 && G==0 && B==0 && A==255){
+            console.log(noteNames[n]);
+            console.log(pixel);
+            playSound(noteFrequencys[n], 'square');
+        }
+    }
+
+}
 
 var context = null;
 var oscillator = null;
@@ -264,41 +292,9 @@ function animate() {
         if (startingX < (c.width + hitDetector.width + 3)) {
             //ctx.fillRect(startingX+hitDetector.width, startingY + 78, 1, 1);
             
-            var lowGPixels = ctx.getImageData(startingX+hitDetector.width, startingY + 88, 1, 1).data;
-            //ctx.putImageData(lowGPixelsAroundHitDetector, 10, 10);
-
-                R = lowGPixels[0];
-                G = lowGPixels[1];
-                B  = lowGPixels[2];
-                A  = lowGPixels[3];
-
-                console.log("R " + R + " G " + G + " B " + B + " A " + A);
-
-                if(R == 0 && G == 0 && B == 0 && A == 255){
-                    console.log("G note!");
-                    console.log(lowGPixels);
-                    playSound(422, 'square');
-                    
-                    
-                }
-
-                var lowAPixels = ctx.getImageData(startingX+hitDetector.width, startingY + 78, 1, 1).data;
-            
-                R = lowAPixels[0];
-                G = lowAPixels[1];
-                B  = lowAPixels[2];
-                A  = lowAPixels[3];
-
-                console.log("R " + R + " G " + G + " B " + B + " A " + A);
-
-                if(R == 0 && G == 0 && B == 0 && A == 255){
-                    console.log("A note!");
-                    console.log(lowAPixels);
-                    playSound(475, 'square');
-                    
-                    
-                }
-
+           // var lowGPixels = ctx.getImageData(startingX+hitDetector.width, startingY + 88, 1, 1).data;
+            console.log(ctx);
+           noteHit(ctx, startingX+hitDetector.width, startingY);
 
             requestId =  requestAnimationFrame(animate);
             //stop();
