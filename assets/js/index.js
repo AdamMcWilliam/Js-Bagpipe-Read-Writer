@@ -1,5 +1,6 @@
 //Testing
 
+
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
@@ -24,6 +25,40 @@ function getImages() {
 
 }
 
+
+//Audio
+
+var context = null;
+var oscillator = null;
+function getOrCreateContext() {
+    if (!context) {
+        context = new AudioContext();
+        oscillator = context.createOscillator();
+        oscillator.connect(context.destination);
+    }
+    return context;
+
+}
+
+var isStarted = false;
+function playSound(frequency, type) {
+    getOrCreateContext();
+    oscillator.frequency.setTargetAtTime(frequency, context.currentTime, 0);
+    if (!isStarted) {
+        oscillator.start(0);
+        isStarted = true;
+    } else {
+        context.resume();
+    }
+}
+
+function stopSound() {
+    context.suspend();
+}
+
+
+
+
 //Menus
 function tabChange(clickedTab) {
     var selectedTab = document.getElementById(clickedTab);
@@ -44,6 +79,7 @@ function tabChange(clickedTab) {
 //Globals
 var noteX = 0;
 var yMod = 1;
+var requestId;
 
 //resetGlobals
 function resetX() {
@@ -107,6 +143,7 @@ function newSheet() {
             ctx.beginPath();
             ctx.moveTo(x, y1);
             ctx.lineTo(x, y2);
+            ctx.strokeStyle = "#FF0000";
             ctx.stroke();
             ctx.closePath();
 
@@ -184,7 +221,9 @@ function placeNote(note) {
     ctx.drawImage(note, noteX, (noteY + yMod), 35, 40);
 }
 
+
 function play() {
+
     hitDetector = new Image();
     hitDetector.src = "assets/images/hitdetector.png";
     startingX = 60;
@@ -197,13 +236,22 @@ function play() {
     sheetData = ctx.getImageData(0, 0, 1500, 900);
 
     animate();
+
 }
 
 function stop() {
-    cancelAnimationFrame(animate);
+    if (requestId) {
+        cancelAnimationFrame(requestId);
+        requestId = undefined;
+        stopSound();
+     }
 }
 
+
 function animate() {
+
+    
+    //y axis of low g = 180
 
 
     ctx.putImageData(sheetData, 0, 0);
@@ -214,7 +262,47 @@ function animate() {
 
         startingX += 4;
         if (startingX < (c.width + hitDetector.width + 3)) {
-            requestAnimationFrame(animate);
+            //ctx.fillRect(startingX+hitDetector.width, startingY + 78, 1, 1);
+            
+            var lowGPixels = ctx.getImageData(startingX+hitDetector.width, startingY + 88, 1, 1).data;
+            //ctx.putImageData(lowGPixelsAroundHitDetector, 10, 10);
+
+                R = lowGPixels[0];
+                G = lowGPixels[1];
+                B  = lowGPixels[2];
+                A  = lowGPixels[3];
+
+                console.log("R " + R + " G " + G + " B " + B + " A " + A);
+
+                if(R == 0 && G == 0 && B == 0 && A == 255){
+                    console.log("G note!");
+                    console.log(lowGPixels);
+                    playSound(422, 'square');
+                    
+                    
+                }
+
+                var lowAPixels = ctx.getImageData(startingX+hitDetector.width, startingY + 78, 1, 1).data;
+            
+                R = lowAPixels[0];
+                G = lowAPixels[1];
+                B  = lowAPixels[2];
+                A  = lowAPixels[3];
+
+                console.log("R " + R + " G " + G + " B " + B + " A " + A);
+
+                if(R == 0 && G == 0 && B == 0 && A == 255){
+                    console.log("A note!");
+                    console.log(lowAPixels);
+                    playSound(475, 'square');
+                    
+                    
+                }
+
+
+            requestId =  requestAnimationFrame(animate);
+            //stop();
+            
             //console.log(startingX);
             //console.log(c.width);
         }
