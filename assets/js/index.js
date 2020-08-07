@@ -14,16 +14,40 @@ canvas.addEventListener('mousedown', function (e) {
 })
 
 
-function getImages() {
+// function getImages() {
 
-    var c = document.getElementById("sheetCanvas");
-    var ctx = c.getContext("2d");
+//     var c = document.getElementById("sheetCanvas");
+//     var ctx = c.getContext("2d");
 
-    var imgData = ctx.getImageData(59, 87, 1480, 140);
-    console.log(imgData);
-    ctx.putImageData(imgData, 28, 769);
+//     var imgData = ctx.getImageData(59, 87, 1480, 140);
+//     console.log(imgData);
+//     ctx.putImageData(imgData, 28, 769);
 
+// }
+
+
+//Load image into canvas
+
+var imageLoader = document.getElementById('imageLoader');
+imageLoader.addEventListener('change', handleImage, false);
+
+var ctx = canvas.getContext('2d');
+
+
+function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        var img = new Image();
+        img.onload = function(){
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img,0,0);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);     
 }
+
 
 
 //Audio
@@ -290,26 +314,21 @@ function animate() {
 
         startingX += 4;
         if (startingX < (c.width + hitDetector.width + 3)) {
-            //ctx.fillRect(startingX+hitDetector.width, startingY + 78, 1, 1);
-            
-           // var lowGPixels = ctx.getImageData(startingX+hitDetector.width, startingY + 88, 1, 1).data;
-            console.log(ctx);
-           noteHit(ctx, startingX+hitDetector.width, startingY);
-
+           
+            noteHit(ctx, startingX+hitDetector.width, startingY);
             requestId =  requestAnimationFrame(animate);
-            //stop();
-            
-            //console.log(startingX);
-            //console.log(c.width);
         }
 
         if (startingX >= (c.width + hitDetector.width + 3)) {
             startingY += 180;
             startingX = 60;
             lines -= 1;
+
+            noteHit(ctx, startingX+hitDetector.width, startingY);
             requestAnimationFrame(animate);
         }
 
     }
 
 }
+
