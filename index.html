@@ -36,7 +36,7 @@
         <div class="buttonContainer">
 
             <div class="controlButtons">
-                <button id="new" onclick="newSheet()">New</button>
+                <button id="new" onclick="newSetup()">New</button>
                 <button id="open">Open</button>
                 <button id="save">Save</button>
                 <button id="print">Print</button>
@@ -118,6 +118,45 @@
         </div>
 
             <div class="sheet">
+            
+                <div id="setupModal" class="modal">
+
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                       
+                        <label for="tuneName">Tune Name:</label>
+                        <br/>
+                        <input type="text" id="tuneName" name="tuneName">
+                        <br/><br/>
+
+                        <label for="composer">Original Composer:</label>
+                        <br/>
+                        <input type="text" id="composer" name="composer">
+                        <br/><br/>
+
+                        <label for="beatings">Beatings:</label>
+                        <select id="beatings" name="beatings">
+                        </select>
+                        <br/><br/>
+
+                        <label for="types">Type:</label>
+                        <select id="types" name="types">
+                        </select>
+                        <br/><br/>
+
+                        <label for="title">Author:</label>
+                        <br/>
+                        <input type="text" id="title" name="title">
+                        <br/><br/>
+
+                        <button id="acceptBtn" name="acceptBtn">Accept</button>
+                        <button id="cancelBtn" name="cancelBtn">Cancel</button>
+
+                      </div>
+                    
+
+                </div>
+
                 <canvas id="sheetCanvas" style="width:1500px; height:900;"></canvas>
             </div>
 

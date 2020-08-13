@@ -140,6 +140,58 @@ function resetX() {
     return noteX;
 }
 
+function closeModal(){
+    var modal = document.getElementById("setupModal");
+    modal.style.display = "none";
+}
+
+function newSetup(){
+    var beatingsArray = ['2/2', '2/4', '3/2', '3/4', '3/8', '4/2', '4/4', '4/8', '6/4', '6/8', '9/4', '9/8', '12/4', '12/8'];
+    var typesArray = ['March', 'Slow March', 'Slow Air', 'Jig', 'Strathspey', 'Reel', 'Retreat', 'Hornpipe', 'Ceol Mor', 'Misc'];
+
+    //pop modal and fill in data
+    var modal = document.getElementById("setupModal");
+
+    modal.style.display = "block";
+
+    var closeSpan = document.getElementsByClassName("close")[0];
+
+    closeSpan.addEventListener("click", closeModal.bind());
+
+    // When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+}
+
+    //add beatings and types to selects
+    var beatingsSelect = document.getElementById("beatings");
+
+    for(var b=0; b<beatingsArray.length; b++){
+        var option = document.createElement("option");
+        option.value = ""+b;
+        option.text = ""+beatingsArray[b];
+        beatingsSelect.add(option, null);
+    }
+
+    var typesSelect = document.getElementById("types");
+
+    for (var t=0; t<typesArray.length; t++){
+        var option = document.createElement("option");
+        option.value = ""+t;
+        option.text = ""+typesArray[t];
+        typesSelect.add(option, null);
+    }
+
+    //buttons
+    var acceptBtn = document.getElementById("acceptBtn");
+    var cancelBtn = document.getElementById("cancelBtn");
+
+    cancelBtn.addEventListener("click", closeModal.bind());
+
+    //newSheet();
+}
 
 //New Button
 function newSheet() {
