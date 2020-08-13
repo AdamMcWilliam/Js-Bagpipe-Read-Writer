@@ -145,6 +145,7 @@ function closeModal(){
     modal.style.display = "none";
 }
 
+//New Button
 function newSetup(){
     var beatingsArray = ['2/2', '2/4', '3/2', '3/4', '3/8', '4/2', '4/4', '4/8', '6/4', '6/8', '9/4', '9/8', '12/4', '12/8'];
     var typesArray = ['March', 'Slow March', 'Slow Air', 'Jig', 'Strathspey', 'Reel', 'Retreat', 'Hornpipe', 'Ceol Mor', 'Misc'];
@@ -187,14 +188,17 @@ window.onclick = function(event) {
     //buttons
     var acceptBtn = document.getElementById("acceptBtn");
     var cancelBtn = document.getElementById("cancelBtn");
-
+   
+    acceptBtn.addEventListener("click", newSheet.bind());
     cancelBtn.addEventListener("click", closeModal.bind());
-
-    //newSheet();
 }
 
-//New Button
 function newSheet() {
+
+    //close setup Modal
+    var modal = document.getElementById("setupModal");
+    modal.style.display = "none";
+
     var c = document.getElementById("sheetCanvas");
 
     c.width = 1500;
