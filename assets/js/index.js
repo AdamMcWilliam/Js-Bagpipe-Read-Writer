@@ -1,5 +1,8 @@
 //Testing
 
+const synth = new Tone.Synth().toDestination();
+const now = Tone.now()
+
 
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
@@ -53,7 +56,7 @@ function handleImage(e){
 //Audio
 function noteHit(ctx,x,y){
     var noteNames = ['lowG', 'lowA', 'B', 'C', 'D', 'E', 'F', 'highG', 'highA'];
-    var noteFrequencys = [422,475,534,594,641,713,792,855,950];
+    var noteFrequencys = ['422','475','534','594','641','713','792','855','950'];
     var noteYOnHitDetector = [88,78,68,58,48,38,28,18,8];
     
 
@@ -74,7 +77,8 @@ function noteHit(ctx,x,y){
         if(R==0 && G==0 && B==0 && A==255){
             console.log(noteNames[n]);
             console.log(pixel);
-            playSound(noteFrequencys[n], 'square');
+            playSound(noteFrequencys[n]);
+            //playSound(noteFrequencys[n], 'square');
         }
     }
 
@@ -93,19 +97,39 @@ function getOrCreateContext() {
 }
 
 var isStarted = false;
-function playSound(frequency, type) {
+// function playSound(frequency, type) {
+//     getOrCreateContext();
+//     oscillator.frequency.setTargetAtTime(frequency, context.currentTime, 0);
+//     if (!isStarted) {
+//         oscillator.start(0);
+//         isStarted = true;
+//     } else {
+//         context.resume();
+//     }
+// }
+
+function playSound(frequency){
+
     getOrCreateContext();
-    oscillator.frequency.setTargetAtTime(frequency, context.currentTime, 0);
+    //oscillator.frequency.setTargetAtTime(frequency, context.currentTime, 0);
+    
     if (!isStarted) {
-        oscillator.start(0);
+        synth.triggerAttack(frequency, 0, 1);
         isStarted = true;
     } else {
-        context.resume();
+        synth.triggerRelease(now + 1);
     }
+
+
+    // synth.triggerAttack(frequency, "10n");
+    // isStarted = true;
+    // synth.triggerRelease(now + 0.3);
+    // context.resume();
 }
 
 function stopSound() {
-    context.suspend();
+    synth.triggerRelease(now);
+    //context.suspend();
 }
 
 
