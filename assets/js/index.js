@@ -1,7 +1,5 @@
 //Testing
 
-const synth = new Tone.Synth().toDestination();
-const now = Tone.now()
 
 
 function getCursorPosition(canvas, event) {
@@ -15,6 +13,17 @@ const canvas = document.querySelector('canvas');
 canvas.addEventListener('mousedown', function (e) {
     getCursorPosition(canvas, e)
 })
+
+//Globals
+var noteX = 0;
+var yMod = 1;
+var requestId;
+var time = 0;
+var testPixel = document.getElementById('testPixel');
+var pixelPlay = 0;
+
+
+
 
 
 // function getImages() {
@@ -37,51 +46,60 @@ imageLoader.addEventListener('change', handleImage, false);
 var ctx = canvas.getContext('2d');
 
 
-function handleImage(e){
+function handleImage(e) {
     var reader = new FileReader();
-    reader.onload = function(event){
+    reader.onload = function (event) {
         var img = new Image();
-        img.onload = function(){
+        img.onload = function () {
             canvas.width = img.width;
             canvas.height = img.height;
-            ctx.drawImage(img,0,0);
+            ctx.drawImage(img, 0, 0);
         }
         img.src = event.target.result;
     }
-    reader.readAsDataURL(e.target.files[0]);     
+    reader.readAsDataURL(e.target.files[0]);
 }
 
 
 
 //Audio
-function noteHit(ctx,x,y){
+function noteHit(ctx, x, y) {
     var noteNames = ['lowG', 'lowA', 'B', 'C', 'D', 'E', 'F', 'highG', 'highA'];
-    var noteFrequencys = ['422','475','534','594','641','713','792','855','950'];
-    var noteYOnHitDetector = [88,78,68,58,48,38,28,18,8];
-    
+    var noteFrequencys = ['422', '475', '534', '594', '641', '713', '792', '855', '950'];
+    var noteYOnHitDetector = [88, 78, 68, 58, 48, 38, 28, 18, 8];
 
-    for (var n=0; n<=8; n++){
+
+    for (var n = 0; n <= 8; n++) {
         //get RGBA of every note pixel
-        console.log(x);
-        console.log(y);
+        //console.log(x);
+        //console.log(y);
+        
+        pixel = ctx.getImageData(x, y + noteYOnHitDetector[n], 1, 1);
+        //visiualization
+        ctx.drawImage(testPixel, x, y + noteYOnHitDetector[n]);
 
-
-
-        pixel = ctx.getImageData(x,y+noteYOnHitDetector[n],1,1).data;
-        R = pixel[0];
-        G = pixel[1];
-        B = pixel[2];
-        A = pixel[3];
+        R = pixel.data[0];
+        G = pixel.data[1];
+        B = pixel.data[2];
+        A = pixel.data[3];
 
         //check for black
-        if(R==0 && G==0 && B==0 && A==255){
-            console.log(noteNames[n]);
-            console.log(pixel);
-            playSound(noteFrequencys[n]);
+        if (R == 0 && G == 0 && B == 0 && A == 255) {
+            console.log("note Name: "+noteNames[n]);
+            console.log(pixel.data);
+
+            //only play every 3rd pixel (how many times it hits the black of the note)
+            pixelPlay +=1;
+            if(pixelPlay == 1 ){
+                playSound(noteFrequencys[n]);
+            }
+            if(pixelPlay == 3){
+                pixelPlay = 0;
+            }
+            
             //playSound(noteFrequencys[n], 'square');
         }
     }
-
 }
 
 var context = null;
@@ -108,24 +126,15 @@ var isStarted = false;
 //     }
 // }
 
-function playSound(frequency){
-
-    getOrCreateContext();
+function playSound(frequency) {
+    console.log("playSound");
+    //getOrCreateContext();
     //oscillator.frequency.setTargetAtTime(frequency, context.currentTime, 0);
-    
-    if (!isStarted) {
-        synth.triggerAttack(frequency, 0, 1);
-        isStarted = true;
-    } else {
-        synth.triggerRelease(now + 1);
-    }
-
-
-    // synth.triggerAttack(frequency, "10n");
-    // isStarted = true;
-    // synth.triggerRelease(now + 0.3);
-    // context.resume();
-}
+        synth.triggerAttackRelease(frequency, "10hz", now + time);
+         //add time for every note hit
+        console.log("now: " + time);
+        time += 0.2;
+    } 
 
 function stopSound() {
     synth.triggerRelease(now);
@@ -145,17 +154,14 @@ function tabChange(clickedTab) {
 
     for (i = 0; i <= tabs.length; i++) {
         if (tabs[i] != clickedTab) {
-            console.log(tabs[i]);
+            //console.log(tabs[i]);
             elm = document.getElementById(tabs[i]);
             elm.style.display = "none";
         }
     }
 }
 
-//Globals
-var noteX = 0;
-var yMod = 1;
-var requestId;
+
 
 //resetGlobals
 function resetX() {
@@ -164,13 +170,13 @@ function resetX() {
     return noteX;
 }
 
-function closeModal(){
+function closeModal() {
     var modal = document.getElementById("setupModal");
     modal.style.display = "none";
 }
 
 //New Button
-function newSetup(){
+function newSetup() {
     var beatingsArray = ['2/2', '2/4', '3/2', '3/4', '3/8', '4/2', '4/4', '4/8', '6/4', '6/8', '9/4', '9/8', '12/4', '12/8'];
     var typesArray = ['March', 'Slow March', 'Slow Air', 'Jig', 'Strathspey', 'Reel', 'Retreat', 'Hornpipe', 'Ceol Mor', 'Misc'];
 
@@ -184,35 +190,35 @@ function newSetup(){
     closeSpan.addEventListener("click", closeModal.bind());
 
     // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
-}
 
     //add beatings and types to selects
     var beatingsSelect = document.getElementById("beatings");
 
-    for(var b=0; b<beatingsArray.length; b++){
+    for (var b = 0; b < beatingsArray.length; b++) {
         var option = document.createElement("option");
-        option.value = ""+b;
-        option.text = ""+beatingsArray[b];
+        option.value = "" + b;
+        option.text = "" + beatingsArray[b];
         beatingsSelect.add(option, null);
     }
 
     var typesSelect = document.getElementById("types");
 
-    for (var t=0; t<typesArray.length; t++){
+    for (var t = 0; t < typesArray.length; t++) {
         var option = document.createElement("option");
-        option.value = ""+t;
-        option.text = ""+typesArray[t];
+        option.value = "" + t;
+        option.text = "" + typesArray[t];
         typesSelect.add(option, null);
     }
 
     //buttons
     var acceptBtn = document.getElementById("acceptBtn");
     var cancelBtn = document.getElementById("cancelBtn");
-   
+
     acceptBtn.addEventListener("click", newSheet.bind());
     cancelBtn.addEventListener("click", closeModal.bind());
 }
@@ -376,13 +382,13 @@ function stop() {
         cancelAnimationFrame(requestId);
         requestId = undefined;
         stopSound();
-     }
+    }
 }
 
 
 function animate() {
 
-    
+
     //y axis of low g = 180
 
 
@@ -394,9 +400,9 @@ function animate() {
 
         startingX += 4;
         if (startingX < (c.width + hitDetector.width + 3)) {
-           
-            noteHit(ctx, startingX+hitDetector.width, startingY);
-            requestId =  requestAnimationFrame(animate);
+
+            noteHit(ctx, startingX + hitDetector.width, startingY);
+            requestId = requestAnimationFrame(animate);
         }
 
         if (startingX >= (c.width + hitDetector.width + 3)) {
@@ -404,7 +410,7 @@ function animate() {
             startingX = 60;
             lines -= 1;
 
-            noteHit(ctx, startingX+hitDetector.width, startingY);
+            noteHit(ctx, startingX + hitDetector.width, startingY);
             requestAnimationFrame(animate);
         }
 

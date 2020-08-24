@@ -116,3 +116,11 @@ body{
     cursor: pointer;
   }
 
+#testPixel{
+    width:1px;
+    height: 1px;
+    float: left;
+    background-color:black;
+    z-index: 1000;
+}
+
